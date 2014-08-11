@@ -87,7 +87,7 @@
     options.mimeType = "image/jpeg";
     options.params = {}; // if we need to send parameters to the server request
     var ft = new FileTransfer();
-    ft.upload(imageData, encodeURI("http://test_canonbury/upload.php"), win, fail, options);
+    ft.upload(imageData, encodeURI("http://test_canonbury/img"), win, fail, options);
     }
  
     // Called when a photo is successfully retrieved
@@ -100,7 +100,7 @@
       //
       var largeImage = document.getElementById('largeImage');
  
-      // Unhide image elements
+      // Unhided  image elements
       //
       largeImage.style.display = 'block';
  
