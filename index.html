@@ -30,10 +30,15 @@
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <title>Hello World</title>
        <script type="text/javascript" charset="utf-8">
+
+       function catchFoto(){
         navigator.camera.getPicture(onSuccess, onFail, { 
-         quality: 100,
+        quality: 100,
         destinationType: Camera.DestinationType.DATA_URL
         });
+       };
+
+      
          
         function onSuccess(imageData) {
             // here we can upload imageData to the server
@@ -105,7 +110,7 @@
        </script>
   </head>
   <body>
-    <button onclick="capturePhoto();">Capture Photo With Image Data</button> <br>
+    <button onclick="catchFoto();">Capture Photo With Image Data</button> <br>
 
     <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
     <img style="display:none;" id="largeImage" src="" />
