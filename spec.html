@@ -1,68 +1,53 @@
-<!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
-    <head>
-        <title>Jasmine Spec Runner</title>
+<head>
+    <title>Subida de fotos</title>
+    <script type="text/javascript" charset="utf-8" src="phonegap-1.2.0.js"></script>
+    <script type="text/javascript" charset="utf-8">
 
-        <!-- jasmine source -->
-        <link rel="shortcut icon" type="image/png" href="spec/lib/jasmine-1.2.0/jasmine_favicon.png">
-        <link rel="stylesheet" type="text/css" href="spec/lib/jasmine-1.2.0/jasmine.css">
-        <script type="text/javascript" src="spec/lib/jasmine-1.2.0/jasmine.js"></script>
-        <script type="text/javascript" src="spec/lib/jasmine-1.2.0/jasmine-html.js"></script>
+        // Esperar a que cargue PhoneGap
+        document.addEventListener("deviceready", onDeviceReady, false);
 
-        <!-- include source files here... -->
-        <script type="text/javascript" src="js/index.js"></script>
+        // PhoneGap listo
+        function onDeviceReady() {
+           // lo que tengas que hacer
+        }
 
-        <!-- include spec files here... -->
-        <script type="text/javascript" src="spec/helper.js"></script>
-        <script type="text/javascript" src="spec/index.js"></script>
+        function getImage() {
+            navigator.camera.getPicture(uploadPhoto, function(message) {
+                  alert('error al capturar imagen');
+            },{
+                  quality: 50,
+                  destinationType: navigator.camera.DestinationType.FILE_URI,
+                  sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+            });
+        }
 
-        <script type="text/javascript">
-            (function() {
-                var jasmineEnv = jasmine.getEnv();
-                jasmineEnv.updateInterval = 1000;
+        function uploadPhoto(imageURI) {
+            var options = new FileUploadOptions(),
+                  params = new Object ;
+            options.fileKey="file";
+            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+            options.mimeType="image/jpeg";
 
-                var htmlReporter = new jasmine.HtmlReporter();
+            params.value1 = "test";
+            params.value2 = "param";
 
-                jasmineEnv.addReporter(htmlReporter);
-
-                jasmineEnv.specFilter = function(spec) {
-                    return htmlReporter.specFilter(spec);
-                };
-
-                var currentWindowOnload = window.onload;
-
-                window.onload = function() {
-                    if (currentWindowOnload) {
-                        currentWindowOnload();
-                    }
-                    execJasmine();
-                };
-
-                function execJasmine() {
-                    jasmineEnv.execute();
-                }
-            })();
+            options.params = params;
+            options.chunkedMode = false;
+          
+            var ft = new FileTransfer();
+            ft.upload(imageURI,"http://test_canonbury.com/upload.php",
+               function(){
+                   console.log('imagen subida correctamente');
+               },
+               function(err){
+                   console.log('error al subir la imagen, error code: ' + err.code);
+               },
+               options);
+        }
         </script>
-    </head>
-    <body>
-        <div id="stage" style="display:none;"></div>
-    </body>
+</head>
+<body>
+    <button onclick="getImage();" id=”subir-foto”>Subir foto</button>
+</body>
 </html>

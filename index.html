@@ -1,57 +1,53 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <title>Capture Image</title>
-
-    <script type="text/javascript" charset="utf-8" src="cordova-x.x.x.js"></script>
-    <script type="text/javascript" charset="utf-8" src="json2.js"></script>
+<head>
+    <title>Subida de fotos</title>
+    <script type="text/javascript" charset="utf-8" src="phonegap-1.2.0.js"></script>
     <script type="text/javascript" charset="utf-8">
 
-    // Called when capture operation is finished
-    //
-    function captureSuccess(mediaFiles) {
-        var i, len;
-        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-            uploadFile(mediaFiles[i]);
+        // Esperar a que cargue PhoneGap
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        // PhoneGap listo
+        function onDeviceReady() {
+           // lo que tengas que hacer
         }
-    }
 
-    // Called if something bad happens.
-    //
-    function captureError(error) {
-        var msg = 'An error occurred during capture: ' + error.code;
-        navigator.notification.alert(msg, null, 'Uh oh!');
-    }
+        function getImage() {
+            navigator.camera.getPicture(uploadPhoto, function(message) {
+                  alert('error al capturar imagen');
+            },{
+                  quality: 50,
+                  destinationType: navigator.camera.DestinationType.FILE_URI,
+                  sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+            });
+        }
 
-    // A button will call this function
-    //
-    function captureImage() {
-        // Launch device camera application,
-        // allowing user to capture up to 2 images
-        navigator.device.capture.captureImage(captureSuccess, captureError, {limit: 2});
-    }
+        function uploadPhoto(imageURI) {
+            var options = new FileUploadOptions(),
+                  params = new Object ;
+            options.fileKey="file";
+            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+            options.mimeType="image/jpeg";
 
-    // Upload files to server
-    function uploadFile(mediaFile) {
-        var ft = new FileTransfer(),
-            path = mediaFile.fullPath,
-            name = mediaFile.name;
+            params.value1 = "test";
+            params.value2 = "param";
 
-        ft.upload(path,
-            "http://my.domain.com/upload.php",
-            function(result) {
-                console.log('Upload success: ' + result.responseCode);
-                console.log(result.bytesSent + ' bytes sent');
-            },
-            function(error) {
-                console.log('Error uploading file ' + path + ': ' + error.code);
-            },
-            { fileName: name });
-    }
-
-    </script>
-    </head>
-    <body>
-        <button onclick="captureImage();">Capture Image</button> <br>
-    </body>
+            options.params = params;
+            options.chunkedMode = false;
+          
+            var ft = new FileTransfer();
+            ft.upload(imageURI,"http://test_canonbury.com/upload.php",
+               function(){
+                   console.log('imagen subida correctamente');
+               },
+               function(err){
+                   console.log('error al subir la imagen, error code: ' + err.code);
+               },
+               options);
+        }
+        </script>
+</head>
+<body>
+    <button onclick="getImage();" id=”subir-foto”>Subir foto</button>
+</body>
 </html>
