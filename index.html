@@ -33,12 +33,12 @@
 
     function catchPicture(){
     navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-    destinationType: Camera.DestinationType.DATA_URL});
+    destinationType: Camera.DestinationType.FILE_URI });
     }
  
  function upload(){
 
-  var serverUrl = "http://promoteserver.com/test_canonbury/index.php";
+  var serverUrl = "http://localhost:8080/pruebacamera/www/index.php";
   var options = new FileUploadOptions();
   options.fileKey = 'file';
   options.fileName = imageData.substr(imageData.lastIndexOf('/')+1);
