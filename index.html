@@ -42,16 +42,16 @@ function onSuccess(imageData) {
     image.src = "data:image/jpeg;base64," + imageData;
 }
 
-function onFail(message) {
-    alert('Failed because: ' + message);
-}
+  function onFail(message) {
+      alert('Failed because: ' + message);
+  }
        </script>
   </head>
   <body>
     <button onclick="catchPicture();">Capture Photo With Image Data</button> <br>
 
     
-    <img style="display:none;width:60px;height:60px;"  id="myImage" src="" />
+    <img  id="myImage" src="" />
 
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
