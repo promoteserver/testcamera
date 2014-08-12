@@ -36,11 +36,32 @@
     destinationType: Camera.DestinationType.DATA_URL});
     }
  
+ function upload(){
 
+  var serverUrl = "http://localhost:8080/pruebacamera/www/index.php";
+  var options = new FileUploadOptions();
+  options.fileKey = 'file';
+  options.fileName = imageData.substr(imageData.lastIndexOf('/')+1);
+  options.mimeType = "image/jpeg";
+
+    var ft =  new FileTransfer();
+  ft.upload(imageData,serverUrl,onUploadSuccess,onUploadError,options);
+ }
+
+ function onUploadSuccess() {
+  alert('Image Upload');
+ }
+
+function onUploadError() {
+  alert('Error');
+}
 function onSuccess(imageData) {
     var image = document.getElementById('myImage');
     image.src = "data:image/jpeg;base64," + imageData;
+    upload(imageData);
 }
+
+
 
   function onFail(message) {
       alert('Failed because: ' + message);
