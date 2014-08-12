@@ -34,53 +34,65 @@
  <script type="text/javascript" charset="utf-8">
 
     function catchPicture(){
-    navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-    destinationType: Camera.DestinationType.FILE_URI });
+    navigator.camera.getPicture(onSuccess, onFail, { 
+    quality: 50,
+    destinationType: Camera.DestinationType.FILE_URI,
+    sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+
+    });
+    }
+
+    function onSuccess(imageURI) {
+    var image = document.getElementById('myImage');
+    image.src = imageURI;
+    }
+
+    function onFail(message) {
+        alert('Failed because: ' + message);
     }
 
     function catchMsg(){
       alert('HOLA');
     }
  
- function upload(){
+   function upload(){
 
-  var serverUrl = "http://localhost:8080/pruebacamera/www/index.php";
-  var options = new FileUploadOptions();
-  options.fileKey = 'file';
-  options.fileName = imageData.substr(imageData.lastIndexOf('/')+1);
-  options.mimeType = "image/jpeg";
+    var win = function (r) {
+    console.log("Code = " + r.responseCode);
+    console.log("Response = " + r.response);
+    console.log("Sent = " + r.bytesSent);
+    }
+    var fail = function (error) {
+        alert("An error has occurred: Code = " + error.code);
+        console.log("upload error source " + error.source);
+        console.log("upload error target " + error.target);
+    }
 
-    var ft =  new FileTransfer();
-  ft.upload(imageData,serverUrl,onUploadSuccess,onUploadError,options);
- }
-
- function onUploadSuccess() {
-  alert('Image Upload');
- }
-
-function onUploadError() {
-  alert('Error');
-}
-function onSuccess(imageData) {
-    var image = document.getElementById('myImage');
-    image.src = imageData;
-    
-    upload(imageData);
-}
+   var options = new FileUploadOptions();
+    options.fileKey = "file";
+    options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+    options.mimeType = "image/jpeg";
 
 
+    var params = {};
+    params.value1 = "test";
+    params.value2 = "param";
 
-  function onFail(message) {
-      alert('Failed because: ' + message);
-  }
-       </script>
+    options.params = params;
+
+    var ft = new FileTransfer();
+    ft.upload(fileURL, encodeURI("http://promoteserver.com/test_canonbury/index.php"), win, fail, options);
+   }
+
+
+  </script>
   </head>
   <body>
     <button onclick="catchPicture();">Capture Photo With Image Data</button> <br>
     <button onclick="catchMsg());">Btn Prueba</button> <br>
 
     
-    <img  id="myImage" src="" />
+    <img  id="myImage" style="width:400px;height:400px;" src="" />
 
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
