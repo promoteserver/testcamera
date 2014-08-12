@@ -48,7 +48,7 @@
             alert('Failed because: ' + message);
         }
         function onSuccess(imageData) {
-        $.post( "http://test_canonbury/upload.php", {data: imageData}, function(data) {
+        $.post( "http://www.test_canonbury.com/upload.php", {data: imageData}, function(data) {
           alert("Image uploaded!");
         });
         }
@@ -94,7 +94,7 @@
             options.mimeType = "image/jpeg";
             options.params = {}; // if we need to send parameters to the server request
             var ft = new FileTransfer();
-            ft.upload(fileURI, encodeURI("http://test_canonbury/upload.php"), win, fail, options);
+            ft.upload(fileURI, encodeURI("http://www.test_canonbury.com/upload.php"), win, fail, options);
         }
          
         function capturePhoto() {
