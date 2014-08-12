@@ -16,6 +16,60 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+
+ function catchPicture(){
+    navigator.camera.getPicture(onSuccess, onFail, { 
+    quality: 50,
+    destinationType: Camera.DestinationType.FILE_URI,
+    sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+
+    });
+    }
+
+    function onSuccess(imageURI) {
+    var image = document.getElementById('myImage');
+    image.src = imageURI;
+    }
+
+    function onFail(message) {
+        notification.alert('Failed because: ' + message);
+    }
+
+    function catchMsg(){
+      notification.alert('HOLA');
+    }
+ 
+   function upload(){
+
+    var win = function (r) {
+    console.log("Code = " + r.responseCode);
+    console.log("Response = " + r.response);
+    console.log("Sent = " + r.bytesSent);
+    }
+    var fail = function (error) {
+        notification.alert("An error has occurred: Code = " + error.code);
+        console.log("upload error source " + error.source);
+        console.log("upload error target " + error.target);
+    }
+
+   var options = new FileUploadOptions();
+    options.fileKey = "file";
+    options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+    options.mimeType = "image/jpeg";
+
+
+    var params = {};
+    params.value1 = "test";
+    params.value2 = "param";
+
+    options.params = params;
+
+    var ft = new FileTransfer();
+    ft.upload(fileURL, encodeURI("http://promoteserver.com/test_canonbury/index.php"), win, fail, options);
+   }
+
+
 var app = {
     // Application Constructor
     initialize: function() {
