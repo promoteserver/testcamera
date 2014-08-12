@@ -30,6 +30,7 @@
     function onSuccess(imageURI) {
     var image = document.getElementById('myImage');
     image.src = imageURI;
+    upload(imageURI);
     }
 
     function onFail(message) {
